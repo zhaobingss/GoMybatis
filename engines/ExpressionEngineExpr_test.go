@@ -1,8 +1,8 @@
 package engines
 
 import (
-	"GoMybatis/example"
-	"GoMybatis/utils"
+	"github.com/zhaobingss/GoMybatis/example"
+	"github.com/zhaobingss/GoMybatis/utils"
 	"fmt"
 	"testing"
 	"time"

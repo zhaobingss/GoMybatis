@@ -1,7 +1,7 @@
 package engines
 
 import (
-	"GoMybatis/utils"
+	"github.com/zhaobingss/GoMybatis/utils"
 	"bytes"
 	"encoding/json"
 	"github.com/nytlabs/gojee"

@@ -1,8 +1,8 @@
 package GoMybatis
 
 import (
-	"GoMybatis/engines"
-	"GoMybatis/example"
+	"github.com/zhaobingss/GoMybatis/engines"
+	"github.com/zhaobingss/GoMybatis/example"
 	"fmt"
 	"testing"
 )

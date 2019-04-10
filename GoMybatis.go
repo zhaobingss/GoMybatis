@@ -1,10 +1,10 @@
 package GoMybatis
 
 import (
-	"GoMybatis/ast"
-	"GoMybatis/utils"
 	"bytes"
 	"github.com/beevik/etree"
+	"github.com/zhaobingss/GoMybatis/ast"
+	"github.com/zhaobingss/GoMybatis/utils"
 	"reflect"
 	"strings"
 )

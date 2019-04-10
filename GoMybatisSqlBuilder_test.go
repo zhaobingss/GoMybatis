@@ -1,9 +1,9 @@
 package GoMybatis
 
 import (
-	"GoMybatis/engines"
-	"GoMybatis/example"
-	"GoMybatis/utils"
+	"github.com/zhaobingss/GoMybatis/engines"
+	"github.com/zhaobingss/GoMybatis/example"
+	"github.com/zhaobingss/GoMybatis/utils"
 	"fmt"
 	"github.com/Knetic/govaluate"
 	"github.com/beevik/etree"

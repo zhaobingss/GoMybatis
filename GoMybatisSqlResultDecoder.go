@@ -1,7 +1,7 @@
 package GoMybatis
 
 import (
-	"GoMybatis/utils"
+	"github.com/zhaobingss/GoMybatis/utils"
 	"reflect"
 	"strconv"
 	"strings"

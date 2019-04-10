@@ -1,7 +1,7 @@
 package GoMybatis
 
 import (
-	"GoMybatis/ast"
+	"github.com/zhaobingss/GoMybatis/ast"
 	"time"
 )
 

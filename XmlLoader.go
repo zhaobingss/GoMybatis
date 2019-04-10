@@ -3,7 +3,7 @@ package GoMybatis
 import (
 	"github.com/beevik/etree"
 	"reflect"
-	"GoMybatis/utils"
+	"github.com/zhaobingss/GoMybatis/utils"
 )
 
 const Element_Mapper = "mapper"

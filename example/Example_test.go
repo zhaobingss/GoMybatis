@@ -1,9 +1,9 @@
 package example
 
 import (
-	"GoMybatis"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/zhaobingss/GoMybatis"
 	"io/ioutil"
 	"testing"
 	"time"

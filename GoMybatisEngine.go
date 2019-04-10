@@ -1,9 +1,9 @@
 package GoMybatis
 
 import (
-	"GoMybatis/ast"
-	"GoMybatis/engines"
-	"GoMybatis/utils"
+	"github.com/zhaobingss/GoMybatis/ast"
+	"github.com/zhaobingss/GoMybatis/engines"
+	"github.com/zhaobingss/GoMybatis/utils"
 	"database/sql"
 )
 
