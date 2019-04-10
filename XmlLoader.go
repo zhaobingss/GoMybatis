@@ -1,9 +1,9 @@
 package GoMybatis
 
 import (
-	"github.com/zhuxiujia/GoMybatis/lib/github.com/beevik/etree"
-	"github.com/zhuxiujia/GoMybatis/utils"
+	"github.com/beevik/etree"
 	"reflect"
+	"GoMybatis/utils"
 )
 
 const Element_Mapper = "mapper"
@@ -28,7 +28,7 @@ func LoadMapperXml(bytes []byte) (items map[string]etree.Token) {
 			s.Tag == Element_Delete_Templete ||
 			s.Tag == Element_Update_Templete ||
 			s.Tag == Element_Select_Templete {
-			var elementID = s.SelectAttrValue(ID,"")
+			var elementID = s.SelectAttrValue(ID, "")
 
 			if elementID == "" {
 				//如果id不存在，id设置为tag
@@ -75,6 +75,7 @@ func includeElementReplace(xml *etree.Element, xmlMap *map[string]etree.Token) {
 		}
 	}
 }
+
 ////标签上下级关系检查
 //func elementRuleCheck(fatherElement *etree.Element, childElementItem ElementItem) {
 //	if fatherElement.Tag != Element_choose && (childElementItem.ElementType == Element_when || childElementItem.ElementType == Element_otherwise) {
