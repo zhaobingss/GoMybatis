@@ -67,7 +67,7 @@ func (it GoMybatisSqlResultDecoder) Decode(resultMap map[string]*ResultProperty,
 						var isBasicTypeSlice = it.isGoBasicType(resultTItemType)
 						var isInterface = resultTItemType.String() == "interface {}"
 						if isBasicTypeSlice && isInterface == false {
-							it.convertToBasicTypeCollection(sqlResult, &valueV, resultTItemType, resultMap)
+							it.convertToBasicTypeCollectionItem(sItemMap, &valueV, resultTItemType, resultMap)
 							resultV = reflect.Append(resultV, valueV)
 						} else {
 							panic("[GoMybatis] Decode result type not support " + resultTItemType.String() + "!")
@@ -246,6 +246,12 @@ func (it GoMybatisSqlResultDecoder) isGoBasicType(tItemTypeFieldType reflect.Typ
 }
 
 func (it GoMybatisSqlResultDecoder) convertToBasicTypeCollection(sourceArray []map[string][]byte, resultV *reflect.Value, itemType reflect.Type, resultMap map[string]*ResultProperty) {
+	for _, sItemMap := range sourceArray {
+		it.convertToBasicTypeCollectionItem(sItemMap, resultV, itemType, resultMap)
+	}
+}
+
+func (it GoMybatisSqlResultDecoder) convertToBasicTypeCollectionItem(sItemMap map[string][]byte, resultV *reflect.Value, itemType reflect.Type, resultMap map[string]*ResultProperty) {
 	if resultV.Type().Kind() == reflect.Slice && resultV.IsValid() {
 		*resultV = reflect.MakeSlice(resultV.Type(), 0, 0)
 	} else if resultV.Type().Kind() == reflect.Map && resultV.IsValid() {
@@ -253,22 +259,20 @@ func (it GoMybatisSqlResultDecoder) convertToBasicTypeCollection(sourceArray []m
 	} else {
 
 	}
-	for _, sItemMap := range sourceArray {
-		for key, value := range sItemMap {
-			if value == nil || len(value) == 0 {
-				continue
-			}
-			var tItemTypeFieldTypeValue = reflect.New(itemType)
-			var tItemTypeFieldTypeValueElem = tItemTypeFieldTypeValue.Elem()
-			var success = it.sqlBasicTypeConvert(key, resultMap, itemType, value, &tItemTypeFieldTypeValueElem)
-			if success {
-				if resultV.Type().Kind() == reflect.Slice {
-					*resultV = reflect.Append(*resultV, tItemTypeFieldTypeValue.Elem())
-				} else if resultV.Type().Kind() == reflect.Map {
-					resultV.SetMapIndex(reflect.ValueOf(key), tItemTypeFieldTypeValue.Elem())
-				} else {
-					resultV.Set(tItemTypeFieldTypeValue.Elem())
-				}
+	for key, value := range sItemMap {
+		if value == nil || len(value) == 0 {
+			continue
+		}
+		var tItemTypeFieldTypeValue = reflect.New(itemType)
+		var tItemTypeFieldTypeValueElem = tItemTypeFieldTypeValue.Elem()
+		var success = it.sqlBasicTypeConvert(key, resultMap, itemType, value, &tItemTypeFieldTypeValueElem)
+		if success {
+			if resultV.Type().Kind() == reflect.Slice {
+				*resultV = reflect.Append(*resultV, tItemTypeFieldTypeValue.Elem())
+			} else if resultV.Type().Kind() == reflect.Map {
+				resultV.SetMapIndex(reflect.ValueOf(key), tItemTypeFieldTypeValue.Elem())
+			} else {
+				resultV.Set(tItemTypeFieldTypeValue.Elem())
 			}
 		}
 	}
