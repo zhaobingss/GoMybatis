@@ -1,13 +1,16 @@
 package GoMybatis
 
+import "sync"
+
 type SessionFactory struct {
 	Engine     SessionEngine
-	SessionMap map[string]Session
+	//SessionMap map[string]Session
+	SessionMap *sync.Map
 }
 
 func (it SessionFactory) New(Engine SessionEngine) SessionFactory {
 	it.Engine = Engine
-	it.SessionMap = make(map[string]Session)
+	it.SessionMap = &sync.Map{}
 	return it
 }
 
@@ -48,26 +51,33 @@ func (it *SessionFactory) NewSession(mapperName string, sessionType SessionType,
 	default:
 		panic("[GoMybatis] newSession() must have a SessionType!")
 	}
-	it.SessionMap[newSession.Id()] = newSession
+	//it.SessionMap[newSession.Id()] = newSession
+	it.SessionMap.Store(newSession.Id(), newSession)
 	return newSession
 }
 
 func (it *SessionFactory) GetSession(id string) Session {
-	return it.SessionMap[id]
+	s,_ := it.SessionMap.Load(id)
+	return s.(Session)
+	//return it.SessionMap[id]
 }
 
 func (it *SessionFactory) SetSession(id string, session Session) {
-	it.SessionMap[id] = session
+	it.SessionMap.Store(id, session)
+	//it.SessionMap[id] = session
 }
 
 func (it *SessionFactory) Close(id string) {
 	if it.SessionMap == nil {
 		return
 	}
-	var s = it.SessionMap[id]
+	s,_ := it.SessionMap.Load(id)
+	//var s = it.SessionMap[id]
 	if s != nil {
-		s.Close()
-		it.SessionMap[id] = nil
+		//s.Close()
+		//it.SessionMap[id] = nil
+		s.(Session).Close()
+		it.SessionMap.Store(id, nil)
 	}
 }
 
@@ -75,10 +85,15 @@ func (it *SessionFactory) CloseAll(id string) {
 	if it.SessionMap == nil {
 		return
 	}
-	for _, v := range it.SessionMap {
-		if v != nil {
-			v.Close()
-			it.SessionMap[id] = nil
-		}
-	}
+	//for _, v := range it.SessionMap {
+	//	if v != nil {
+	//		v.Close()
+	//		it.SessionMap[id] = nil
+	//	}
+	//}
+	it.SessionMap.Range(func(key, value interface{}) bool {
+		value.(Session).Close()
+		it.SessionMap.Store(key, nil)
+		return true
+	})
 }

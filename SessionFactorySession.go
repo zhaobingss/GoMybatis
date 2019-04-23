@@ -47,11 +47,13 @@ func (it *SessionFactorySession) Begin() error {
 }
 func (it *SessionFactorySession) Close() {
 	var id = it.Id()
-	var s = it.Factory.SessionMap[id]
+	//var s = it.Factory.SessionMap[id]
+	s,_ := it.Factory.SessionMap.Load(id)
 	if s != nil {
 		if it.Session != nil {
 			it.Session.Close()
 		}
-		it.Factory.SessionMap[id] = nil
+		//it.Factory.SessionMap[id] = nil
+		it.Factory.SessionMap.Store(id, nil)
 	}
 }
